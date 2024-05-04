@@ -1,5 +1,7 @@
+using Medicine.AutoMapper;
 using Medicine.Dtos;
 using Medicine.Models;
+using Medicine.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +21,8 @@ namespace Medicine
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-
+            builder.Services.AddAutoMapper(typeof(Mapping));
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repo<>));
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Production")));
