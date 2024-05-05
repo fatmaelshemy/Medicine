@@ -3,9 +3,14 @@ using Medicine.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Medicine.Repozitorys;
+using System.Diagnostics.Contracts;
+using Medicine.Repository;
 
 namespace Medicine
 {
@@ -21,7 +26,7 @@ namespace Medicine
             builder.Services.AddSwaggerGen();
 
 
-
+          
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Production")));
 
@@ -32,6 +37,9 @@ namespace Medicine
                         .AllowAnyOrigin()
                         .AllowAnyHeader());
             });
+            // Register repository implementations
+            builder.Services.AddScoped<IContact, RepoContact>();
+            builder.Services.AddScoped<ISpecialization, RepoSpecialization>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {

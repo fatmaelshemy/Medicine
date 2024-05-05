@@ -1,10 +1,22 @@
-﻿namespace Medicine.Models
-{
-	public class Specialization
-	{
-		public int Id { get; set; }
-		public string Name { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
-		public List<Doctor>? Doctors { get; set; }
-	}
+namespace Medicine.Models
+{
+    public class Specialization
+
+    {
+        public int Id { get; set; }
+      
+        [MinLength(3)]
+
+        [MaxLength(20)]
+
+        [Required(ErrorMessage = " Name Is Required")]
+
+        public string Name { get; set; }
+        public List<Doctor>? Doctors { get; set; }
+    }
+
+
 }
+
