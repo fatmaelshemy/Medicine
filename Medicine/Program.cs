@@ -27,7 +27,6 @@ namespace Medicine
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(Mapping));
-            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repo<>));
             
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -43,7 +42,7 @@ namespace Medicine
             // Register repository implementations
             builder.Services.AddScoped<IContact, RepoContact>();
             builder.Services.AddScoped<ISpecialization, RepoSpecialization>();
-
+            builder.Services.AddScoped<Ipatient,PatientRepo>();
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;

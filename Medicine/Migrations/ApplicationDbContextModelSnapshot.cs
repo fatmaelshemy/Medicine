@@ -127,7 +127,7 @@ namespace Medicine.Migrations
 
                     b.HasIndex("doctor_id");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.Contact", b =>
@@ -152,7 +152,7 @@ namespace Medicine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contacts", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.Doctor", b =>
@@ -191,7 +191,7 @@ namespace Medicine.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.Experience", b =>
@@ -223,7 +223,7 @@ namespace Medicine.Migrations
 
                     b.HasIndex("doctor_id");
 
-                    b.ToTable("Experience");
+                    b.ToTable("Experience", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.Patient", b =>
@@ -246,7 +246,7 @@ namespace Medicine.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.Qualifications", b =>
@@ -278,7 +278,7 @@ namespace Medicine.Migrations
 
                     b.HasIndex("doctor_id");
 
-                    b.ToTable("Qualifications");
+                    b.ToTable("Qualifications", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.Review", b =>
@@ -309,7 +309,7 @@ namespace Medicine.Migrations
 
                     b.HasIndex("doctor_id");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.Specialization", b =>
@@ -326,7 +326,7 @@ namespace Medicine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specializations");
+                    b.ToTable("Specializations", (string)null);
                 });
 
             modelBuilder.Entity("Medicine.Models.TimeSlots", b =>
@@ -354,7 +354,7 @@ namespace Medicine.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("TimeSlots");
+                    b.ToTable("TimeSlots", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

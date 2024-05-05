@@ -15,9 +15,10 @@ namespace Medicine.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-
-        public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        private readonly ApplicationDbContext _context;
+        public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
             _configuration = configuration;
         }
@@ -46,6 +47,20 @@ namespace Medicine.Controllers
                 if (!assignRoleResult.Succeeded)
                 {
                     return new BadRequestObjectResult(assignRoleResult.Errors);
+                }
+                if (Role == "Patiant")
+                {
+                    var PatientUser =_context.Users.FirstOrDefault(a=>a.UserName==registerDto.UserName);
+                    if (PatientUser != null)
+                    {
+                        var Patient = new Patient()
+                        {
+                            userId = PatientUser.Id,
+                        };
+                        _context.Add(Patient);
+                        _context.SaveChanges(); 
+                    }
+                    
                 }
 
                 return Ok("Register Success");
