@@ -1,28 +1,26 @@
 ﻿using AutoMapper;
 using Medicine.Dtos.Patient;
 using Medicine.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Medicine.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 
 namespace patient.Controllers
 {
     public class PatientController : Controller
     {
-        ApplicationDbContext _dbcontext;
-        IMapper _mapper;
-        public PatientController(ApplicationDbContext dbcontext, IMapper mapper)
+        IRepository<Patient> _reposatery;
+         IMapper _mapper;
+        public PatientController(IRepository<Patient> reposatery, IMapper mapper)
         {
-            _dbcontext = dbcontext;
+            _reposatery= reposatery;
             _mapper = mapper;
         }
         [HttpGet("GetAllPatients")]
         public IActionResult Index()
         {
-          var patients= _dbcontext.Patients.Include(a=>a.User).ToList();
-            if (patients == null || patients.Count == 0)
+          var patients= _reposatery.GetAll();
+            if (patients == null || patients.Count()== 0)
             {
                 return NoContent();
             }
@@ -37,7 +35,7 @@ namespace patient.Controllers
                 return BadRequest("Please enter a valid id");
             }
          //  var patient = _dbcontext.Patients.Find(id);
-             var patient= _dbcontext.Patients.Include(s=>s.User).FirstOrDefault(a=>a.Id==id);
+             var patient= _reposatery.GetById(id);
             //var patient = _dbcontext.Patients.First(a=>a.Id==id);
             //var patient = _dbcontext.Patients.Where(a=>a.Id==id).First();
             if (patient==null)
@@ -59,8 +57,7 @@ namespace patient.Controllers
                 return BadRequest("Enter a valid Patient");
             }
             var mapp = _mapper.Map<Patient>(addPatientDto);
-            _dbcontext.Patients.Add(mapp);
-            _dbcontext.SaveChanges();
+            _reposatery.Add(mapp);
             return Ok("Patient added successfully");
         }
         // Remove 
@@ -71,11 +68,10 @@ namespace patient.Controllers
             {
                 return BadRequest("Please enter a valid id");
             }
-            var removePatient =_dbcontext.Patients.FirstOrDefault(a=>a.Id==id);
+            var removePatient = _reposatery.GetById(id);
             if (removePatient != null)
             {
-                _dbcontext.Remove(removePatient);
-                _dbcontext.SaveChanges();
+                _reposatery.Delete(id);
                 return Ok("Patient deleted successfully");
             }
             else
@@ -95,7 +91,7 @@ namespace patient.Controllers
                 return BadRequest("Please enter a valid id");
             }
             //  var patient = _dbcontext.Patients.Find(id);
-            var patient = _dbcontext.Patients.Include(s => s.User).FirstOrDefault(a => a.Id == id);
+            var patient = _reposatery.GetById(id);
             //var patient = _dbcontext.Patients.First(a=>a.Id==id);
             //var patient = _dbcontext.Patients.Where(a=>a.Id==id).First();
             if (patient == null)
@@ -115,15 +111,13 @@ namespace patient.Controllers
         {
             if (ModelState.IsValid)
             {
-            
-               var patient= _dbcontext.Patients.AsNoTracking().Include(a => a.User).FirstOrDefault(a => a.Id == id);
-               if(patient == null)
+
+                var patient = _reposatery.GetById(id);
                 {
                     return NotFound("Sorry! Patient not found");
                 }
             var map=_mapper.Map<Patient>(model);
-                _dbcontext.Update(map);
-                _dbcontext.SaveChanges();
+                _reposatery.Update(map);
                 return RedirectToAction("Index");
             }
             else 

@@ -6,31 +6,34 @@ namespace Medicine.Repository
     public class Repo<T> : IRepository<T> where T : class
     {
         private readonly DbContext _context;
+        private DbSet<T> _dbSet=null;
 
         public Repo(DbContext context)
         {
             _context = context;
+             _dbSet= _context.Set<T>();
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>();
+            return _dbSet.ToList();
         }
 
         public T GetById(int id)
         {
-            return _context.Set<T>().Find(id);
+            return _dbSet.Find(id);
         }
 
         public void Add(T model)
         {
-            _context.Set<T>().Add(model);
+            _dbSet.Add(model);
             _context.SaveChanges();
         }
 
         public void Update(T model)
         {
-            _context.Set<T>().Update(model);
+            _dbSet.Attach(model);
+           _context.Entry(model).State = EntityState.Modified;
             _context.SaveChanges();
         }
 

@@ -23,6 +23,7 @@ namespace Medicine
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(Mapping));
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repo<>));
+            
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Production")));
