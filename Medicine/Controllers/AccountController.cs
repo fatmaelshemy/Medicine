@@ -48,20 +48,7 @@ namespace Medicine.Controllers
                 {
                     return new BadRequestObjectResult(assignRoleResult.Errors);
                 }
-                if (Role == "Patiant")
-                {
-                    var PatientUser =_context.Users.FirstOrDefault(a=>a.UserName==registerDto.UserName);
-                    if (PatientUser != null)
-                    {
-                        var Patient = new Patient()
-                        {
-                            userId = PatientUser.Id,
-                        };
-                        _context.Add(Patient);
-                        _context.SaveChanges(); 
-                    }
-                    
-                }
+              
 
                 return Ok("Register Success");
             }

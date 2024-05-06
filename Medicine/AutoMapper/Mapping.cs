@@ -12,7 +12,8 @@ namespace Medicine.AutoMapper
             CreateMap<Patient,PatientDto>();
             CreateMap<AddPatientDto, Patient>();
            CreateMap<Patient, AddPatientDto>();
-            CreateMap<UpdatePatientDto, Patient>();
+            CreateMap<PatientDto, Patient>();
+            CreateMap<ApplicationUserDto, ApplicationUser>();
         }
     }
 }

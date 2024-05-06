@@ -8,6 +8,8 @@ namespace Medicine.Dtos.Patient
         public int Id { get; set; }
         public string BloodType { get; set; }
         public string userId { get; set; }
-        public ApplicationUser? User { get; set; }
+
+        public ApplicationUserDto? User { get; set; }
     }
+
 }

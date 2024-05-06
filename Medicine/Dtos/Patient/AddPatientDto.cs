@@ -6,5 +6,6 @@ namespace Medicine.Dtos.Patient
     {
         public string BloodType { get; set; }
         public string userId { get; set; }
+
     }
 }
