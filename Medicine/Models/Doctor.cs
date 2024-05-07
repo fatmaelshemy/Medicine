@@ -14,7 +14,11 @@ namespace Medicine.Models
 
 		public float TicketPrice { get; set; }
 
-		[ForeignKey("User")]
+        [ForeignKey("Specialization")]
+        public int SpecializationId { get; set; }
+        public Specialization Specialization { get; set; }
+
+        [ForeignKey("User")]
 		public string userId { get; set; }
 		public ApplicationUser? User { get; set; }
 
