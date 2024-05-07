@@ -40,6 +40,7 @@ namespace Medicine
             // Register repository implementations
             builder.Services.AddScoped<IContact, RepoContact>();
             builder.Services.AddScoped<ISpecialization, RepoSpecialization>();
+            builder.Services.AddScoped<IDoctor, RepoDoctor>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
