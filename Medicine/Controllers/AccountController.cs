@@ -15,9 +15,10 @@ namespace Medicine.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-
-        public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        private readonly ApplicationDbContext _context;
+        public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
             _configuration = configuration;
         }
@@ -47,6 +48,7 @@ namespace Medicine.Controllers
                 {
                     return new BadRequestObjectResult(assignRoleResult.Errors);
                 }
+              
 
                 return Ok("Register Success");
             }
