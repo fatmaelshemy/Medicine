@@ -1,4 +1,3 @@
-using Medicine.AutoMapper;
 using Medicine.Dtos;
 using Medicine.Models;
 using Medicine.Repository;
@@ -26,7 +25,6 @@ namespace Medicine
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddAutoMapper(typeof(Mapping));
             
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
