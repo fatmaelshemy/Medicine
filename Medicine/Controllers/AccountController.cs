@@ -48,7 +48,7 @@ namespace Medicine.Controllers
                 {
                     return new BadRequestObjectResult(assignRoleResult.Errors);
                 }
-              
+
 
                 return Ok("Register Success");
             }
@@ -90,12 +90,33 @@ namespace Medicine.Controllers
                     return Ok(new
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expired = token.ValidTo
+                        expired = token.ValidTo,
+                        userId = userfromdb.Id,
                     });
                 }
 
             }
             return Unauthorized("Invalid Account");
         }
+
+        [HttpGet("getuser/{id}")]
+        public async Task<ActionResult<UserData>> GetUser(string id)
+        {
+            ApplicationUser? userfromdb = await _userManager.FindByIdAsync(id);
+
+            if (userfromdb != null)
+            {
+                return new UserData()
+                {
+                    UserName = userfromdb.UserName,
+                    Id = userfromdb.Id,
+                    ImageUrl = userfromdb.ImageUrl
+                };
+            }
+            return NotFound("User Not Found");
+
+        }
     }
+
+
 }

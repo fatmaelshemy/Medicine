@@ -25,7 +25,7 @@ namespace Medicine
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            
+
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Production")));
@@ -40,7 +40,7 @@ namespace Medicine
             // Register repository implementations
             builder.Services.AddScoped<IContact, RepoContact>();
             builder.Services.AddScoped<ISpecialization, RepoSpecialization>();
-            builder.Services.AddScoped<Ipatient,PatientRepo>();
+            builder.Services.AddScoped<Ipatient, PatientRepo>();
             builder.Services.AddScoped<IDoctor, RepoDoctor>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -60,18 +60,18 @@ namespace Medicine
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    options.SaveToken = true;
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidAudience = "http://localhost:4200/",
-                        ValidIssuer = "http://localhost:5221/",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fatmafatmafatmafatmafatmafatmafatmafatmafatmafatma"))
-                    };
-                });
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = "http://localhost:4200/",
+                    ValidIssuer = "http://localhost:5221/",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fatmafatmafatmafatmafatmafatmafatmafatmafatmafatma"))
+                };
+            });
 
             builder.Services.AddSwaggerGen(swagger =>
             {
