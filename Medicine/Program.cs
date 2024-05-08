@@ -43,6 +43,8 @@ namespace Medicine
             builder.Services.AddScoped<IContact, RepoContact>();
             builder.Services.AddScoped<ISpecialization, RepoSpecialization>();
             builder.Services.AddScoped<Ipatient,PatientRepo>();
+            builder.Services.AddScoped<IDoctor, RepoDoctor>();
+
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
