@@ -9,7 +9,7 @@ namespace Medicine.Repository
 
 
         public Doctor GetById(int id);
-
+        public Doctor GetByUserId(string userId);
         public void Insert(Doctor obj);
 
         public void Update(Doctor obj);
