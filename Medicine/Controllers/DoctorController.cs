@@ -35,7 +35,7 @@ namespace Medicine.Controllers
 
             return Ok(doctors);
         }
-        [HttpGet("{doctorId:int}")]
+        [HttpGet("GetDoctorById/{doctorId:int}")]
         public IActionResult GetDoctorById (int doctorId)
         {
             var doctor = _Doctor.GetById(doctorId);
@@ -60,6 +60,7 @@ namespace Medicine.Controllers
                 SpecializationName = doctor.Specialization.Name,
                 Qualifications = doctor.Qualifications.Select(q => new QualificationDto
                 {
+                    Id = q.Id,
                     Degree = q.Degree,
                     University = q.University,
                     StartQualificationDate = q.St_date,
@@ -67,6 +68,7 @@ namespace Medicine.Controllers
                 }).ToList(),
                 Experiences = doctor.Experiences.Select(e => new ExperienceDto
                 {
+                    Id = e.Id,
                     Hospital = e.Hospital,
                     Position = e.Position,
                     StartExperienceDate = e.St_date,
@@ -74,6 +76,7 @@ namespace Medicine.Controllers
                 }).ToList(),
                 TimeSlots = doctor.TimeSlots.Select(t => new TimeSlotDto
                 {
+                    Id = t.Id,
                     DayTimeSlot = t.Day,
                     Form = t.Form,
                     To = t.To
@@ -83,12 +86,64 @@ namespace Medicine.Controllers
 
             return Ok(doctorDto);
         }
-    
 
-        [HttpPut("{doctorId:int}")]
-        public async Task<IActionResult> UpdateDoctorProfile(int doctorId, [FromBody] UpdateDoctorDto updateDoctorDto)
+        [HttpGet("GetDoctorByUserId/{UserId}")]
+        public IActionResult GetDoctorByUserId(string UserId)
         {
-            var doctorFromDb = _Doctor.GetById(doctorId);
+            var doctor = _Doctor.GetByUserId(UserId);
+
+            if (doctor == null)
+            {
+                return NotFound("Doctor not found.");
+            }
+            var doctorDto = new GetALLDoctorsDTO
+            {
+                Id = doctor.Id,
+                BasicInfo = new BasicDoctorData
+                {
+                    DoctorName = doctor.User.UserName,
+                    Email = doctor.User.Email,
+                    Phone = doctor.User.PhoneNumber,
+                    Gender = doctor.User.Gender,
+                    Bio = doctor.Bio,
+                    About = doctor.About,
+                    TicketPrice = doctor.TicketPrice
+                },
+                SpecializationName = doctor.Specialization.Name,
+                Qualifications = doctor.Qualifications.Select(q => new QualificationDto
+                {
+                    Id =q.Id,
+                    Degree = q.Degree,
+                    University = q.University,
+                    StartQualificationDate = q.St_date,
+                    EndQualificationsDate = q.En_date
+                }).ToList(),
+                Experiences = doctor.Experiences.Select(e => new ExperienceDto
+                {
+                    Id = e.Id,
+                    Hospital = e.Hospital,
+                    Position = e.Position,
+                    StartExperienceDate = e.St_date,
+                    EndExperienceDate = e.En_date
+                }).ToList(),
+                TimeSlots = doctor.TimeSlots.Select(t => new TimeSlotDto
+                {
+                    Id = t.Id,
+                    DayTimeSlot = t.Day,
+                    Form = t.Form,
+                    To = t.To
+                }).ToList()
+            };
+
+
+            return Ok(doctorDto);
+        }
+
+
+        [HttpPut("{UserId}")]
+        public async Task<IActionResult> UpdateDoctorProfile(string UserId, [FromBody] UpdateDoctorDto updateDoctorDto)
+        {
+            var doctorFromDb = _Doctor.GetByUserId(UserId);
 
             if (doctorFromDb == null)
             {
@@ -99,9 +154,6 @@ namespace Medicine.Controllers
             doctorFromDb.User.Email = updateDoctorDto.BasicInfo.Email;
             doctorFromDb.User.PhoneNumber = updateDoctorDto.BasicInfo.Phone;
             doctorFromDb.User.ImageUrl = updateDoctorDto.BasicInfo.ImageUrl;
-
-
-
 
             var userUpdateResult = await _userManager.UpdateAsync(doctorFromDb.User);
             if (!userUpdateResult.Succeeded)
@@ -121,7 +173,7 @@ namespace Medicine.Controllers
             _Doctor.UpdateQualifications(doctorFromDb.Qualifications, updateDoctorDto.Qualifications);
             _Doctor.UpdateExperiences(doctorFromDb.Experiences, updateDoctorDto.Experiences);
             _Doctor.UpdateTimeSlot(doctorFromDb.TimeSlots, updateDoctorDto.TimeSlots);
-             _Doctor.Save();
+            _Doctor.Save();
 
             return Ok("تم تحديث ملف الطبيب بنجاح.");
         }

@@ -42,7 +42,7 @@ namespace Medicine
             builder.Services.AddScoped<ISpecialization, RepoSpecialization>();
             builder.Services.AddScoped<Ipatient, PatientRepo>();
             builder.Services.AddScoped<IDoctor, RepoDoctor>();
-
+            builder.Services.AddScoped<IReview,ReviewRepo>();
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
